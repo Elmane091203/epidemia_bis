@@ -276,4 +276,4 @@
       });
     });
   </script>
-  <script src="../../assets//js/script.js"></script>
+  <script src="http://localhost/epidemia_bis/assets/js/script.js"></script>

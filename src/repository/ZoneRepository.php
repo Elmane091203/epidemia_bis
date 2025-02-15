@@ -1,6 +1,8 @@
 <?php
-namespace App;
-require_once "../../vendor/bootstrap.php";
+
+use App\Zone;
+
+require_once "C:/xampp/htdocs/epidemia_bis/vendor/bootstrap.php";
 
 function addZone($zone) {
     global $entityManager;

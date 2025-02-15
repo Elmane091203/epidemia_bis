@@ -25,7 +25,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" id="paysTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -66,7 +66,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" id="zonesTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -109,7 +109,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" id="pointsTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -150,7 +150,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" id="usersTable">
                         <thead>
                             <tr>
                                 <th>ID</th>

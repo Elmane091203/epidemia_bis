@@ -1,6 +1,8 @@
 <?php
-namespace App;
-require_once "../../vendor/bootstrap.php";
+
+use App\User;
+
+require_once "C:/xampp/htdocs/epidemia_bis/vendor/bootstrap.php";
 
 function addUser(User $user) {
     global $entityManager;

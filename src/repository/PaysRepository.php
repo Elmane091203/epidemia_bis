@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+use App\Pays;
 
-require_once "../../vendor/bootstrap.php";
+require_once "C:/xampp/htdocs/epidemia_bis/vendor/bootstrap.php";
 function addPays(Pays $pays)
 {
     global $entityManager;

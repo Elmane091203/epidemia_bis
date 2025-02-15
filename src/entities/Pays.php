@@ -46,4 +46,8 @@ class Pays
         $zone->setPays($this);
         $this->zones->add($zone);
     }
+
+    public function __toString() {
+        return $this->nom;
+    }
 }
