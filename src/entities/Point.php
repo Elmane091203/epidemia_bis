@@ -43,4 +43,12 @@ class Point{
     public function setZone(Zone $zone): void {
         $this->zone = $zone;
     }
+    public function toJson(): array {
+        return [
+            'id' => $this->id,
+            'nom' => $this->nom,
+            'zone_id' => $this->zone->getId(),
+        ];
+    }
+    
 }

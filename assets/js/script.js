@@ -99,12 +99,19 @@ function loadPays() {
     .then((paysList) => {
       let tbody = document.querySelector("#paysTable tbody");
       tbody.innerHTML = "";
+      
+      console.log(paysList);
       paysList.forEach((pays) => {
         let row = `<tr>
                     <td>${pays.id}</td>
                     <td>${pays.nom}</td>
                     <td>
-                        <button onclick="deletePays(${pays.id})">Supprimer</button>
+                        <button class="btn btn-sm btn-success">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deletePays(${pays})" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
                 </tr>`;
         tbody.innerHTML += row;

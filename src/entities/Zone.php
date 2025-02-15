@@ -123,4 +123,16 @@ class Zone
         $this->nb_positifs = $zone->getNbPositifs();
 
     }
+    public function toJson(): array {
+        return [
+            'id' => $this->id,
+            'nom' => $this->nom,
+            'statut' => $this->statut,
+            'nb_habitants' => $this->nb_habitants,
+            'nb_symptomatiques' => $this->nb_symptomatiques,
+            'nb_positifs' => $this->nb_positifs,
+            'pays_id' => $this->pays->getId(),
+        ];
+    }
+    
 }

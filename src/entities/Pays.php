@@ -50,4 +50,11 @@ class Pays
     public function __toString() {
         return $this->nom;
     }
+    public function toJson(): array {
+        return [
+            'id' => $this->id,
+            'nom' => $this->nom,
+        ];
+    }
+    
 }

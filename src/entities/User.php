@@ -1,65 +1,83 @@
 <?php
+
 namespace App;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table('utilisateurs')]
-class User{
+class User
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:"integer")]
+    #[ORM\Column(type: "integer")]
     private int $id;
-    
-    #[ORM\Column(type:"string", length:255)]
+
+    #[ORM\Column(type: "string", length: 255)]
     private string $nom_prenom;
-    
-    #[ORM\Column(type:"string", length:20,unique:true)]
+
+    #[ORM\Column(type: "string", length: 20, unique: true)]
     private string $login;
-    
-    #[ORM\Column(type:"string", length:255)]
+
+    #[ORM\Column(type: "string", length: 255)]
     private string $mdp;
 
-    #[ORM\Column(type:"string",options:["Administrateur","Agent"])]
+    #[ORM\Column(type: "string", options: ["Administrateur", "Agent"])]
     private string $role;
 
-    public function __construct() {
-    }
+    public function __construct() {}
 
-    
-    public function getId(): int {
+
+    public function getId(): int
+    {
         return $this->id;
     }
-    
-    public function getNomPrenom(): string {
+
+    public function getNomPrenom(): string
+    {
         return $this->nom_prenom;
     }
-    
-    public function setNomPrenom(string $nom): void {
+
+    public function setNomPrenom(string $nom): void
+    {
         $this->nom_prenom = $nom;
     }
-    
-    public function getLogin(): string {
+
+    public function getLogin(): string
+    {
         return $this->login;
     }
-    
-    public function setLogin(string $nom): void {
+
+    public function setLogin(string $nom): void
+    {
         $this->login = $nom;
     }
-    
-    public function getMdp(): string {
+
+    public function getMdp(): string
+    {
         return $this->mdp;
     }
-    
-    public function setMdp(string $nom): void {
+
+    public function setMdp(string $nom): void
+    {
         $this->mdp = $nom;
     }
-    public function getRole(): string {
+    public function getRole(): string
+    {
         return $this->role;
     }
-    
-    public function setRole(string $nom): void {
+
+    public function setRole(string $nom): void
+    {
         $this->role = $nom;
     }
-
+    public function toJson(): array
+    {
+        return [
+            'id' => $this->id,
+            'nom_prenom' => $this->nom_prenom,
+            'login' => $this->login,
+            'role' => $this->role,
+        ];
+    }
 }
