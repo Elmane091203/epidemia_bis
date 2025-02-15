@@ -1,0 +1,19 @@
+.sidebar {
+    height: 100vh;
+    background: #2f4050;
+}
+
+.sidebar-link {
+    color: #fff;
+    padding: 15px;
+    display: block;
+    text-decoration: none;
+}
+
+.sidebar-link:hover {
+    background: #293846;
+}
+
+.main-content {
+    background: #f3f3f4;
+}
