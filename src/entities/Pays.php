@@ -54,6 +54,7 @@ class Pays
         return [
             'id' => $this->id,
             'nom' => $this->nom,
+            'zones' => $this->zones->map(fn (Zone $zone) => $zone->toJson())->toArray(),
         ];
     }
     

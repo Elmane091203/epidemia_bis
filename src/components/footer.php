@@ -274,6 +274,9 @@
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');
       });
+      $(".sidebar-link").on('click', function() {
+        $('#btn-side_bar').click();
+      });
     });
   </script>
   <script src="http://localhost/epidemia_bis/assets/js/script.js"></script>

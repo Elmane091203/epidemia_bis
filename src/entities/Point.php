@@ -48,6 +48,9 @@ class Point{
             'id' => $this->id,
             'nom' => $this->nom,
             'zone_id' => $this->zone->getId(),
+            'zone_nom' => $this->zone->getNom(),
+            'nb_zone_points' => count($this->zone->getPoints()),
+            'pays'=>$this->zone->getPays()->getNom(),
         ];
     }
     

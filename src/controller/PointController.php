@@ -2,6 +2,7 @@
 namespace App;
 
 require_once "../repository/PointRepository.php";
+require_once "../repository/ZoneRepository.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_POST["action"] ?? null;
@@ -25,9 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 } elseif ($_SERVER["REQUEST_METHOD"] === "GET") {
     if (isset($_GET["id"])) {
-        echo json_encode(getPoint((int)$_GET["id"]));
+        echo json_encode(getPoint((int)$_GET["id"])->toJson());
     } else {
-        echo json_encode(getPoints());
+        $points = getPoints();
+
+        echo json_encode(array_map(fn($point) => $point->toJson(), $points),JSON_PRETTY_PRINT);
     }
 }
 ?>

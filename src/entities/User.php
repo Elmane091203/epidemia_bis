@@ -78,6 +78,7 @@ class User
             'nom_prenom' => $this->nom_prenom,
             'login' => $this->login,
             'role' => $this->role,
+            'mdp' => $this->mdp,
         ];
     }
 }

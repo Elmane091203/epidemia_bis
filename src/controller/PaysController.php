@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 } elseif ($_SERVER["REQUEST_METHOD"] === "GET") {
     if (isset($_GET["id"])) {
-        echo json_encode(getPaysId((int)$_GET["id"]));
+        echo json_encode(getPaysId((int)$_GET["id"])->toJson());
     } else {
         $paysList = getPays();
         echo json_encode(array_map(fn($pays) => $pays->toJson(), $paysList),JSON_PRETTY_PRINT);

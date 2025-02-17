@@ -3,7 +3,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
+            <button class="navbar-toggler" id="btn-side_bar" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-nav">
@@ -87,7 +87,7 @@
         <div class="tab-pane" id="points">
             <div class="d-flex justify-content-between mb-4">
                 <h2>Gestion des Points de surveillance</h2>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPoint">
                     <i class="fas fa-plus me-2"></i>Ajouter un point
                 </button>
             </div>

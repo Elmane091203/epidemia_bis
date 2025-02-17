@@ -28,7 +28,7 @@ class Zone
     #[ORM\Column(type: "integer")]
     private int $nb_positifs;
 
-    #[ManyToOne(targetEntity: Pays::class, cascade: ['persist'], inversedBy: 'zones')]
+    #[ManyToOne(targetEntity: Pays::class, inversedBy: 'zones')]
     #[JoinColumn(name: 'pays_id', referencedColumnName: 'id')]
     private Pays $pays;
     #[ORM\OneToMany(targetEntity: Point::class, cascade: ['persist', 'remove'], mappedBy: "zone")]
@@ -132,6 +132,8 @@ class Zone
             'nb_symptomatiques' => $this->nb_symptomatiques,
             'nb_positifs' => $this->nb_positifs,
             'pays_id' => $this->pays->getId(),
+            'points' => $this->points->map(fn (Point $point) => $point->toJson())->toArray(),
+            'pays'=>$this->pays->getNom(),
         ];
     }
     

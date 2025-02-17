@@ -6,6 +6,9 @@ require_once "C:/xampp/htdocs/epidemia_bis/vendor/bootstrap.php";
 
 function addZone($zone) {
     global $entityManager;
+    if ($zone->getPoints()->isEmpty()) {
+        throw new \Exception("Une zone doit avoir au moins un point de surveillance.");
+    }
     $entityManager->persist($zone);
     $entityManager->flush();
     return $zone->getId();
