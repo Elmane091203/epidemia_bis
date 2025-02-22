@@ -38,8 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $zone->setNbSymptomatiques((int)$_POST["nb_symptomatiques"]);
             $zone->setNbPositifs((int)$_POST["nb_positifs"]);
             $zone->setPays(getPaysId((int)$_POST["pays_id"]));
-
+            
             updateZone($zone);
+            echo json_encode(["message" => "Zone modifiee avec succès"]);
         }
     } elseif ($action === "delete") {
         deleteZone((int)$_POST["id"]);

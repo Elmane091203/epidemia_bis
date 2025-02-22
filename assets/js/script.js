@@ -3,9 +3,14 @@ let count = container.querySelectorAll(".point-entry").length;
 zonePositifs = document.getElementById("zonePositifs");
 zoneSymptomatiques = document.getElementById("zoneSymptomatiques");
 zoneHabitants = document.getElementById("zoneHabitants");
+zonePositifsU = document.getElementById("zonePositifsU");
+zoneSymptomatiquesU = document.getElementById("zoneSymptomatiquesU");
+zoneHabitantsU = document.getElementById("zoneHabitantsU");
 document.addEventListener("DOMContentLoaded", function () {
   $("#zoneSymptomatiques").val(0);
   $("#zonePositifs").val(0);
+  $("#zoneSymptomatiquesU").val(0);
+  $("#zonePositifsU").val(0);
   loadZones();
   loadUsers();
   loadPays();
@@ -18,17 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
     // Récupération des points de surveillance
     let pointInputs = document.querySelectorAll("input[name='point_nom[]']");
     let points = [];
-    
+
     pointInputs.forEach((input) => {
-        let pointNom = input.value.trim();
-        if (pointNom) {
-            points.push(pointNom);
-        }
+      let pointNom = input.value.trim();
+      if (pointNom) {
+        points.push(pointNom);
+      }
     });
 
     if (points.length === 0) {
-        alert("Veuillez ajouter au moins un point de surveillance !");
-        return;
+      alert("Veuillez ajouter au moins un point de surveillance !");
+      return;
     }
 
     let formData = new URLSearchParams();
@@ -42,24 +47,56 @@ document.addEventListener("DOMContentLoaded", function () {
     formData.append("pays_id", document.getElementById("pays_id").value);
 
     points.forEach((point, index) => {
-        formData.append(`point_nom[${index}]`, point);
+      formData.append(`point_nom[${index}]`, point);
     });
 
     fetch("http://localhost/epidemia_bis/src/controller/ZoneController.php", {
-        method: "POST",
-        body: formData,
+      method: "POST",
+      body: formData,
     })
-        .then((response) => response.text()).
-        then(text => {console.log(text); return JSON.parse(text);}
-        )
-        .then(() => {
-                loadZones();
-                document.getElementById("zoneForm").reset();
-                $('#btn-modal-add-zone').click();
-        })
-});
+      .then((response) => response.text()).
+      then(text => { console.log(text); return JSON.parse(text); }
+      )
+      .then(() => {
+        loadZones();
+        document.getElementById("zoneForm").reset();
+        $('#btn-modal-add-zone').click();
+      })
+  });
 
- 
+  document.getElementById("zoneFormU").addEventListener("submit", function (e) {
+    e.preventDefault();
+    let id = document.getElementById("zoneIdU").value;
+    let action = id ? "update" : "add";
+
+    
+    let formData = new URLSearchParams();
+    formData.append("action", action);
+    formData.append("id", id);
+    formData.append("nom", document.getElementById("zoneNomU").value);
+    formData.append("statut", document.getElementById("zoneStatutU").value);
+    formData.append("nb_habitants", document.getElementById("zoneHabitantsU").value);
+    formData.append("nb_symptomatiques", document.getElementById("zoneSymptomatiquesU").value);
+    formData.append("nb_positifs", document.getElementById("zonePositifsU").value);
+    formData.append("pays_id", document.getElementById("pays_idU").value);
+
+    
+
+    fetch("http://localhost/epidemia_bis/src/controller/ZoneController.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.text()).
+      then(text => { console.log(text); return JSON.parse(text); }
+      )
+      .then(() => {
+        loadZones();
+        document.getElementById("zoneForm").reset();
+        $('#btn-modal-modif-zone').click();
+      })
+  });
+
+
   document.getElementById("userForm").addEventListener("submit", function (e) {
     e.preventDefault();
     let id = document.getElementById("userId").value;
@@ -110,26 +147,42 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     let id = document.getElementById("pointId").value;
     let action = id ? "update" : "add";
-
-    fetch("http://localhost/epidemia_bis/src/controller/PointController.php", {
-      method: "POST",
-      body: new URLSearchParams({
-        action,
-        id,
-        nom: document.getElementById("pointNom").value,
-        zone_id: document.getElementById("zone_id").value,
-      }),
-    })
-      .then((response) => response.text())
-      .then(text=>{console.log(text);
-      })
-      .then(() => {
-        loadZones();
-        document.getElementById("pointForm").reset();
-        $("#btn_point").text("Enregistrer");
-        $("#titre_point").text("Ajouter Pays");
+    
+    
+    fetch("http://localhost/epidemia_bis/src/controller/PointController.php?id="+id, {
+      method: "GET",
+    }).then((response)=>response.json())
+    .then((point)=>{
+      
+      if (point.nb_zone_points==1) {
+        alert("Ce point ne peut pas changer de zone!");
         $("#btn-modal-add-point").click();
-      });
+      }else{
+        fetch("http://localhost/epidemia_bis/src/controller/PointController.php", {
+          method: "POST",
+          body: new URLSearchParams({
+            action,
+            id,
+            nom: document.getElementById("pointNom").value,
+            zone_id: document.getElementById("zone_id").value,
+          }),
+        })
+          .then((response) => response.text())
+          .then(text => {
+            console.log(text);
+          })
+          .then(() => {
+            loadZones();
+            document.getElementById("pointForm").reset();
+            $("#btn_point").text("Enregistrer");
+            $("#titre_point").text("Ajouter Pays");
+            $("#btn-modal-add-point").click();
+          });
+      }
+    });
+
+
+    
   });
 });
 
@@ -139,6 +192,7 @@ function loadPays() {
     .then((paysList) => {
       let tbody = document.querySelector("#paysTable tbody");
       let select = document.querySelector("#pays_id");
+      let selectU = document.querySelector("#pays_idU");
       tbody.innerHTML = "";
 
       paysList.forEach((pays) => {
@@ -158,6 +212,7 @@ function loadPays() {
         <option value="${pays.id}">${pays.nom}</option>`;
         tbody.innerHTML += row;
         select.innerHTML += option;
+        selectU.innerHTML += option;
       });
     });
 }
@@ -178,11 +233,9 @@ function loadPoints() {
   fetch("http://localhost/epidemia_bis/src/controller/PointController.php")
     .then((response) => response.json())
     .then((points) => {
-      let select = document.querySelector("#zone_id");
       let tbody = document.querySelector("#pointsTable tbody");
-      
+
       tbody.innerHTML = "";
-      select.innerHTML = "";
       points.forEach((point) => {
         let row = `<tr>
                     <td>${point.id}</td>
@@ -191,7 +244,7 @@ function loadPoints() {
                     <td>${point.pays}</td>
                     <td>
                     
-                                    <button class="btn btn-sm btn-success" onclick="chargerMoadlPoint(${point.id},'${point.nom}','${point.zone_nom}',${point.zone_id})">
+                                    <button class="btn btn-sm btn-success" onclick="chargerMoadlPoint(${point.id},'${point.nom}','${point.zone_nom}',${point.zone_id})" data-bs-toggle="modal" data-bs-target="#addPoint">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button onclick="deletePoint(${point.id})" class="btn btn-sm btn-danger">
@@ -199,11 +252,8 @@ function loadPoints() {
                                     </button>
                     </td>
                 </tr>`;
-                if(point.nb_zone_points<4){
-                let option = `
-                <option value="${point.zone_id}">${point.zone_nom}</option>`;
-                select.innerHTML += option;}
-                tbody.innerHTML += row;
+        
+        tbody.innerHTML += row;
       });
     });
 }
@@ -225,8 +275,11 @@ function loadZones() {
     .then((response) => response.json())
     .then((zones) => {
       let tbody = document.querySelector("#zonesTable tbody");
+      let select = document.querySelector("#zone_id");
+
       tbody.innerHTML = "";
-      
+      select.innerHTML = "";
+
       zones.forEach((zone) => {
         let row = `<tr class="bg-${couleur(zone.statut)}">
                     <td>${zone.id}</td>
@@ -235,7 +288,7 @@ function loadZones() {
                     <td>${zone.pays}</td>
                     <td>${zone.points.length}</td>
                     <td>
-                                    <button class="btn btn-sm btn-success">
+                                    <button class="btn btn-sm btn-success" onclick="chargerModalZone(${zone.id},'${zone.nom}','${zone.statut}',${zone.nb_positifs},${zone.nb_habitants},${zone.nb_symptomatiques},${zone.pays_id})" data-bs-toggle="modal" data-bs-target="#modifZone">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button onclick="deleteZone(${zone.id})" class="btn btn-sm btn-danger">
@@ -243,10 +296,17 @@ function loadZones() {
                                     </button>
                     </td>
                 </tr>`;
+                if (zone.points.length < 4) {
+                  console.log(zone.points.length);
+                  
+                  let option = `
+                        <option value="${zone.id}">${zone.nom}</option>`;
+                  select.innerHTML += option;
+                }
         tbody.innerHTML += row;
       });
     });
-    loadPoints();
+  loadPoints();
 }
 
 function loadUsers() {
@@ -294,18 +354,16 @@ function deleteUser(id) {
   }
 }
 function calculStatut() {
-  $("#zoneStatut").val(classifierZone(parseInt(zoneHabitants.value),parseInt(zoneSymptomatiques.value),parseInt(zonePositifs.value)));
-  
+  $("#zoneStatut").val(classifierZone(parseInt(zoneHabitants.value), parseInt(zoneSymptomatiques.value), parseInt(zonePositifs.value)));
+  $("#zoneStatutU").val(classifierZone(parseInt(zoneHabitantsU.value), parseInt(zoneSymptomatiquesU.value), parseInt(zonePositifsU.value)));
+
 }
 function classifierZone(totalHabitants, symptomes, casConfirmes) {
-  // Vérification des valeurs négatives
   if (totalHabitants < 0 || symptomes < 0 || casConfirmes < 0) {
     throw new Error("Les valeurs doivent être positives.");
   }
 
-  // Cas particulier : aucun symptôme signalé
   if (symptomes === 0) {
-    // S'il n'y a aucun symptôme et aucun cas confirmé, on considère la zone comme verte
     if (casConfirmes === 0) {
       return "verte";
     } else {
@@ -315,10 +373,8 @@ function classifierZone(totalHabitants, symptomes, casConfirmes) {
     }
   }
 
-  // Calcul du taux de positivité parmi les personnes présentant des symptômes
   const tauxPositifs = (casConfirmes / totalHabitants) * 100;
 
-  // Classification selon les critères
   if (tauxPositifs < 5) {
     return "verte";
   } else if (tauxPositifs < 15) {
@@ -334,11 +390,21 @@ function chargerModalPays(id, nom) {
   $("#paysId").val(id);
   $("#paysNom").val(nom);
 }
-function chargerMoadlPoint(id, nom,zone_nom,zone_id) {
+function chargerMoadlPoint(id, nom, zone_nom, zone_id) {
   $("#btn_point").text("Modifier");
   $("#titre_point").text("Modifier Point");
   $("#pointId").val(id);
   $("#pointNom").val(nom);
+  console.log($("#zone_id"));
+}
+function chargerModalZone(id, nom,statut,nb_positifs,nb_habitants,nb_symptomatiques,pays_id) {
+  $("#zoneIdU").val(id);
+  $("#zoneNomU").val(nom);
+  $("#zoneHabitantsU").val(nb_habitants);
+  $("#zoneSymptomatiquesU").val(nb_symptomatiques);
+  $("#zonePositifsU").val(nb_positifs);
+  $("#zoneStatutU").val(statut);
+  $("#pays_idU").val(pays_id);
   console.log($("#zone_id"));
 }
 $("#btn_add_point_zone").on("click", function () {
@@ -376,14 +442,35 @@ function suivant() {
       "Le nombre de cas positifs ne peut pas etre superieur au nombre d'habitants"
     );
     zonePositifs.focus();
-  } 
+  }
+  if (parseInt(zoneHabitantsU.value) > 0) {
+    zoneSymptomatiquesU.removeAttribute("readonly");
+  }
+  if (parseInt(zoneHabitantsU.value) < parseInt(zoneSymptomatiquesU.value)) {
+    alert(
+      "Le nombre de symptomatiques ne peut pas etre superieur au nombre d'habitants"
+    );
+    parseInt(zoneSymptomatiquesU.value) = parseInt(zoneHabitantsU.value);
+    zoneSymptomatiquesU.focus();
+  } else {
+    if (parseInt(zoneSymptomatiquesU.value) > 0) {
+      zonePositifsU.removeAttribute("readonly");
+    }
+  }
+  if (parseInt(zoneHabitantsU.value) < parseInt(zonePositifsU.value)) {
+    parseInt(zonePositifsU.value) = parseInt(zoneHabitantsU.value);
+    alert(
+      "Le nombre de cas positifs ne peut pas etre superieur au nombre d'habitants"
+    );
+    zonePositifsU.focus();
+  }
 }
 function couleur(statut) {
-  
-  if (statut==='orange') {
+
+  if (statut === 'orange') {
     return 'warning';
   }
-  if (statut==='rouge') {
+  if (statut === 'rouge') {
     return 'danger';
   }
 }

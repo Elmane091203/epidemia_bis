@@ -80,6 +80,50 @@
         </div>
     </div>
 </div>
+<!-- Zoneupdate Modal -->
+<div class="modal fade" id="modifZone">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="zoneFormU">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier Zone</h5>
+                    <button type="button" class="btn-close" id="btn-modal-modif-zone" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="zoneIdU">
+                    <div class="mb-3">
+                        <label>Nom Zone</label>
+                        <input type="text" id="zoneNomU" class="form-control" placeholder="Nom de la zone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Nombre d'habitants</label>
+                        <input type="number" onblur="suivant()" onchange="calculStatut()" id="zoneHabitantsU" class="form-control" placeholder="Nombre d'habitants" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Nombre de symptomatiques</label>
+                        <input type="number" readonly onblur="suivant()" onchange="calculStatut()" id="zoneSymptomatiquesU" class="form-control" placeholder="Nombre de symptomatiques" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Nombre de positifs</label>
+                        <input type="number" readonly onblur="suivant()" onchange="calculStatut()" id="zonePositifsU" class="form-control" placeholder="Nombre de positifs" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Statut</label>
+                        <input type="text" readonly class="form-control" id="zoneStatutU">
+                    </div>
+                    <div class="mb-3">
+                        <label>Pays</label>
+                        <select id="pays_idU" required class="form-control">
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Add User Modal -->
 <div class="modal fade" id="addUser">
     <div class="modal-dialog">
